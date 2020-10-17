@@ -1,3 +1,4 @@
 class Endpoints{
-  static String getUserUrl = "http://10.0.2.2:8000/api/user";
+  static String getTokenUrl = "http://10.0.2.2:8000/api/auth/login";
+  static String getUserUrl = "http://10.0.2.2:8000/api/auth/check";
 }

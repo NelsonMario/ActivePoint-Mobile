@@ -1,3 +1,4 @@
+import 'package:activepoint_frontend/service/http/getToken.dart';
 import 'package:activepoint_frontend/service/http/getUser.dart';
 import 'package:flutter/material.dart';
 import 'package:activepoint_frontend/customWidget/button/secondaryButton.dart';
@@ -8,7 +9,7 @@ import 'customWidget/button/editTextWithIcon.dart';
 class LoginForm extends StatelessWidget {
 
   final UserHttp userHttp = new UserHttp();
-
+  final TokenHttp tokenHttp = new TokenHttp();
   final double _loginOffset ;
   final Function(int) changeState;
 
@@ -20,6 +21,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    var token = null;
 
     return AnimatedContainer(
       curve: Curves.fastLinearToSlowEaseIn,
@@ -52,16 +54,12 @@ class LoginForm extends StatelessWidget {
                   GestureDetector(
                     onTap: (){
                       var scaffold = Scaffold.of(context);
-
-                      userHttp.getUser(receiveEmailController.text, receivePasswordController.text).then((value) => {
-                        scaffold.showSnackBar(
-                          SnackBar(
-                            content: Text(value.email),
-                            action: SnackBarAction(
-                              label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar,
-                            ),
-                          )
-                        )
+                      tokenHttp.getToken(receiveEmailController.text, receivePasswordController.text).then((value) => {
+                        token = value,
+                      }).catchError((e) => print("error")).whenComplete(() => {
+                        userHttp.getUser(receiveEmailController.text, receivePasswordController.text, token).then((value) => {
+                          print(value.email)
+                        })
                       });
                     },
                       child: PrimaryButton('Login')

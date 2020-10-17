@@ -7,8 +7,10 @@ import 'package:http/http.dart';
 class UserHttp{
   final String getUserUrl = Endpoints.getUserUrl;
 
-  Future<User> getUser(String email, String password) async {
-    Response res = await post(getUserUrl, body: {
+  Future<User> getUser(String email, String password, String token) async {
+    Response res = await post(getUserUrl, headers: {
+      'Authorization': 'Bearer ' + token
+    }, body: {
       "email": email,
       "password": password
     });

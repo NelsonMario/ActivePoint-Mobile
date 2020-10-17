@@ -8,10 +8,10 @@ class User{
 
   factory User.fromJson(Map<String, dynamic> json){
     return User(
-     id: json['id'] as int,
-     email: json['email'],
-     password: json['password'],
-     point: json['point']
+       id: json['id'] as int,
+       email: json['email'],
+       password: json['password'],
+       point: json['point']
     );
   }
 
