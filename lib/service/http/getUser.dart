@@ -8,11 +8,8 @@ class UserHttp{
   final String getUserUrl = Endpoints.getUserUrl;
 
   Future<User> getUser(String email, String password, String token) async {
-    Response res = await post(getUserUrl, headers: {
+    Response res = await get(getUserUrl, headers: {
       'Authorization': 'Bearer ' + token
-    }, body: {
-      "email": email,
-      "password": password
     });
 
     if(res.statusCode == 200){

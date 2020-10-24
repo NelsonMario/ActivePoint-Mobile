@@ -1,10 +1,10 @@
+import 'package:activepoint_frontend/homePage.dart';
 import 'package:activepoint_frontend/service/http/getToken.dart';
 import 'package:activepoint_frontend/service/http/getUser.dart';
 import 'package:flutter/material.dart';
 import 'package:activepoint_frontend/customWidget/button/secondaryButton.dart';
 import './customWidget/button/primaryButton.dart';
 import 'customWidget/button/editTextWithIcon.dart';
-
 
 class LoginForm extends StatelessWidget {
 
@@ -18,10 +18,17 @@ class LoginForm extends StatelessWidget {
 
   LoginForm(this._loginOffset, this.changeState);
 
+
   @override
   Widget build(BuildContext context) {
 
-    var token = null;
+    var token = "";
+
+    _navigateToHomePage(){
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return HomePage();
+      }));
+    }
 
     return AnimatedContainer(
       curve: Curves.fastLinearToSlowEaseIn,
@@ -53,12 +60,12 @@ class LoginForm extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: (){
-                      var scaffold = Scaffold.of(context);
                       tokenHttp.getToken(receiveEmailController.text, receivePasswordController.text).then((value) => {
                         token = value,
                       }).catchError((e) => print("error")).whenComplete(() => {
                         userHttp.getUser(receiveEmailController.text, receivePasswordController.text, token).then((value) => {
-                          print(value.email)
+                          print(value.email),
+                          _navigateToHomePage(),
                         })
                       });
                     },
@@ -81,5 +88,9 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
     
