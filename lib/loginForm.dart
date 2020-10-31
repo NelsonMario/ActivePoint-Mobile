@@ -3,6 +3,7 @@ import 'package:activepoint_frontend/service/http/getToken.dart';
 import 'package:activepoint_frontend/service/http/getUser.dart';
 import 'package:flutter/material.dart';
 import 'package:activepoint_frontend/customWidget/button/secondaryButton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './customWidget/button/primaryButton.dart';
 import 'customWidget/button/editTextWithIcon.dart';
 
@@ -23,7 +24,6 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var token = "";
-
     _navigateToHomePage(){
       Navigator.push(context, MaterialPageRoute(builder: (context){
         return HomePage();
@@ -62,6 +62,7 @@ class LoginForm extends StatelessWidget {
                     onTap: (){
                       tokenHttp.getToken(receiveEmailController.text, receivePasswordController.text).then((value) => {
                         token = value,
+                        setTokenToSF(token),
                       }).catchError((e) => print("error")).whenComplete(() => {
                         userHttp.getUser(receiveEmailController.text, receivePasswordController.text, token).then((value) => {
                           print(value.email),
@@ -87,6 +88,11 @@ class LoginForm extends StatelessWidget {
       ),
     );
   }
+}
+
+setTokenToSF(String token) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('REQUEST_TOKEN', token);
 }
 
 

@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:activepoint_frontend/model/takenTask.dart';
 import 'package:activepoint_frontend/service/http/endpoints.dart';
 import 'package:activepoint_frontend/model/task.dart';
 import 'package:http/http.dart';
 
 class TaskHTTP{
   final String getTasksUrl = Endpoints.getTasksUrl;
+  final String getTakenTaskUrl = Endpoints.getTakenTaskUrl;
+
 
   Future<List<Task>> getTasks() async{
 
@@ -21,4 +24,22 @@ class TaskHTTP{
       throw "Can't get tasks";
     }
   }
+
+  Future<TakenTask> getTakenTask(String token) async{
+    Response res = await get(getTakenTaskUrl, headers: {
+      "Authorization": "Bearer " + token
+    });
+
+    if(res.statusCode == 200){
+      var json = jsonDecode(res.body);
+
+      return TakenTask.fromJson(json);
+    }
+  }
+
+
+
 }
+
+
+

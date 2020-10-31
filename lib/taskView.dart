@@ -1,17 +1,18 @@
+import 'package:activepoint_frontend/customWidget/cards/gradientCardView.dart';
 import 'package:activepoint_frontend/service/http/getTasks.dart';
 import 'package:flutter/material.dart';
 
 import 'model/task.dart';
 
-class TaskPage extends StatefulWidget{
+class TaskView extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _MyTaskPageState();
+    return _MyTaskViewState();
   }
 }
 
-class _MyTaskPageState extends State<TaskPage>{
+class _MyTaskViewState extends State<TaskView>{
 
   TaskHTTP taskHttp = new TaskHTTP();
 
@@ -28,13 +29,14 @@ class _MyTaskPageState extends State<TaskPage>{
               if(snapshot.hasData){
                 List<Task> tasks = snapshot.data;
                 return ListView(
-                  children:
-                  tasks.map(
-                          (Task task) => ListTile(
-                        title: Text(task.taskName.toString()),
-                        subtitle: Text(task.description.toString()),
-                      )
-                  ).toList()
+                  children: tasks.map(
+                          (Task task) => GradientCardView(task.taskName, task.startDate,task.rewardPoint)
+//                              ListTile(
+//                        title: Text(task.taskName.toString()),
+//                        subtitle: Text(task.description.toString()),
+//                      )
+                  ).toList(),
+
                 );
               }
               return Center(child: CircularProgressIndicator());

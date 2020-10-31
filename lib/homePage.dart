@@ -1,5 +1,6 @@
+import 'package:activepoint_frontend/dashboard.dart';
 import 'package:activepoint_frontend/rewardPage.dart';
-import 'package:activepoint_frontend/taskPage.dart';
+import 'package:activepoint_frontend/taskView.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,30 +16,34 @@ class HomePage extends StatefulWidget{
 class _MyHomePageState extends State<HomePage>{
 
   final List<Widget> _children = [
-    TaskPage(),
-    TaskPage(),
     RewardPage(),
+    Dashboard(),
+    TaskView(),
   ];
 
   int _currentIndex = 1;
+  String token;
 
   @override
   Widget build(BuildContext context) {
-
-
-
     void onTabTapped(int index) {
       setState(() {
         _currentIndex = index;
       });
     }
 
+
+
+    setState(() {
+      _readToken().then((value) => token = value);
+    });
+
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: CurvedNavigationBar(
         height: 50,
         color: Colors.white,
-        backgroundColor: Color(0XFF0288D1),
+        backgroundColor: Colors.white,
         buttonBackgroundColor: Colors.white,
         items: <Widget>[
           Icon(Icons.verified_user, size: 20, color: Colors.black,),
@@ -56,13 +61,7 @@ class _MyHomePageState extends State<HomePage>{
       ),
     );
   }
-
-
 }
-
-
-
-
 
 Future<String> _readToken() async {
 
