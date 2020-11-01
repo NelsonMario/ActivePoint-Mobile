@@ -1,10 +1,11 @@
-import 'package:activepoint_frontend/customWidget/button/secondaryButton.dart';
-import 'package:activepoint_frontend/model/takenTask.dart';
 import 'package:activepoint_frontend/service/http/getTasks.dart';
 import 'package:activepoint_frontend/taskView.dart';
 import 'package:activepoint_frontend/utils/colorConstants.dart';
+import 'package:activepoint_frontend/utils/credentialConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model/takenTask.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -15,11 +16,13 @@ class _MyDashboardState extends State<Dashboard> {
 
 
   String token = "";
-  int takenTask = 0;
-  int unfinishedTask = 0;
+  TaskHTTP taskHttp = new TaskHTTP();
+  int taken = 0;
+  int unfinished = 0;
 
   @override
   Widget build(BuildContext context) {
+
 
     Column buildInfo(int countTasks, String title){
         return Column(
@@ -44,18 +47,8 @@ class _MyDashboardState extends State<Dashboard> {
           )
         ]
       );
-    };
+    }
 
-    setState(() {
-      _readToken().then((value) => {
-        token = value,
-      }).whenComplete(() => {
-        requestTakenTask(token).then((value) => {
-          takenTask = value.taken,
-          unfinishedTask = value.unfinished,
-        }),
-      });
-    });
     return Container(
       child: SafeArea(
         child: Column(
@@ -79,7 +72,7 @@ class _MyDashboardState extends State<Dashboard> {
                   ),
                   SizedBox(height: 10,),
                   LinearProgressIndicator(
-                    value: takenTask == 0 ? 0 :  (unfinishedTask - takenTask) / takenTask,
+                    value: taken == 0 ? 0 : taken - unfinished / taken,
                     backgroundColor: lightGrayColor,
                     valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
                   ),
@@ -106,13 +99,26 @@ class _MyDashboardState extends State<Dashboard> {
                 borderRadius: BorderRadius.circular(24),
                 color: secondaryColor
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  buildInfo(takenTask, "Taken Task"),
-                  SizedBox(width: 25,),
-                  buildInfo(unfinishedTask, "Unfinished Task")
-                ],
+              child: FutureBuilder(
+                future: taskHttp.getTakenTask(envToken),
+                builder: (BuildContext bc, AsyncSnapshot<TakenTask> snapshot){
+                  if(snapshot.hasData){
+                    TakenTask takenTask = snapshot.data;
+
+                    taken = takenTask.taken;
+                    unfinished = takenTask.unfinished;
+
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        buildInfo(taken, "Taken Task"),
+                        SizedBox(width: 25,),
+                        buildInfo(unfinished, "Unfinished Task")
+                      ],
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
               )
             ),
             SizedBox(height: 10,),
@@ -133,31 +139,29 @@ class _MyDashboardState extends State<Dashboard> {
       )
     );
   }
+  Future<String> _readToken() async {
+
+    String _token = "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _token = prefs.getString("REQUEST_TOKEN");
+
+    return _token;
+  }
+
+  _requestTakenTask(String token) async{
+    TaskHTTP taskHTTP = new TaskHTTP();
+
+    int tempTaken = 0;
+    int tempUnfinished = 0;
+
+    await taskHTTP.getTakenTask(token).then((value) => {
+      tempTaken = value.taken,
+      tempUnfinished = value.unfinished,
+    }).catchError((e) => print("error"));
+  }
 }
 
-Future<String> _readToken() async {
 
-  String _token = "";
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  _token = prefs.getString("REQUEST_TOKEN");
-
-  return _token;
-}
-
-Future<TakenTask> requestTakenTask(String token) async{
-
-  TaskHTTP taskHTTP = new TaskHTTP();
-
-  int taken = 0;
-  int unfinished = 0;
-
-  await taskHTTP.getTakenTask(token).then((value) => {
-    taken = value.taken,
-    unfinished = value.unfinished,
-  }).catchError((e) => print("error"));
-
-  return new TakenTask(taken: taken, unfinished: unfinished);
-}
 
 
 

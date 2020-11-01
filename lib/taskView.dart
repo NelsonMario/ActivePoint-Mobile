@@ -27,6 +27,7 @@ class _MyTaskViewState extends State<TaskView>{
             future: taskHttp.getTasks(),
             builder: (BuildContext buildContext, AsyncSnapshot<List<Task>> snapshot) {
               if(snapshot.hasData){
+                print("Complete");
                 List<Task> tasks = snapshot.data;
                 return ListView(
                   children: tasks.map(
@@ -36,7 +37,6 @@ class _MyTaskViewState extends State<TaskView>{
 //                        subtitle: Text(task.description.toString()),
 //                      )
                   ).toList(),
-
                 );
               }
               return Center(child: CircularProgressIndicator());

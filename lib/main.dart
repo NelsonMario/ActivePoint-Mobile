@@ -54,11 +54,14 @@ class _InitPageState extends State<InitPage>{
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
 
     _windowHeight = MediaQuery.of(context).size.height;
     _loginOffsetY = _windowHeight;
+
 
     switch(_pageState){
       case 0:

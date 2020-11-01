@@ -1,6 +1,7 @@
 import 'package:activepoint_frontend/homePage.dart';
 import 'package:activepoint_frontend/service/http/getToken.dart';
 import 'package:activepoint_frontend/service/http/getUser.dart';
+import 'package:activepoint_frontend/utils/credentialConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:activepoint_frontend/customWidget/button/secondaryButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +21,6 @@ class LoginForm extends StatelessWidget {
   LoginForm(this._loginOffset, this.changeState);
 
 
-  @override
   Widget build(BuildContext context) {
 
     var token = "";
@@ -29,6 +29,7 @@ class LoginForm extends StatelessWidget {
         return HomePage();
       }));
     }
+
 
     return AnimatedContainer(
       curve: Curves.fastLinearToSlowEaseIn,
@@ -63,6 +64,7 @@ class LoginForm extends StatelessWidget {
                       tokenHttp.getToken(receiveEmailController.text, receivePasswordController.text).then((value) => {
                         token = value,
                         setTokenToSF(token),
+                        envToken = value
                       }).catchError((e) => print("error")).whenComplete(() => {
                         userHttp.getUser(receiveEmailController.text, receivePasswordController.text, token).then((value) => {
                           print(value.email),

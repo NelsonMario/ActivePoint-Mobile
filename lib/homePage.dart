@@ -46,9 +46,9 @@ class _MyHomePageState extends State<HomePage>{
         backgroundColor: Colors.white,
         buttonBackgroundColor: Colors.white,
         items: <Widget>[
-          Icon(Icons.verified_user, size: 20, color: Colors.black,),
+          Icon(Icons.monetization_on, size: 20, color: Colors.black,),
           Icon(Icons.add, size: 20, color: Colors.black,),
-          Icon(Icons.list, size: 20, color: Colors.black,),
+          Icon(Icons.supervised_user_circle, size: 20, color: Colors.black,),
         ],
         animationDuration: Duration(
           milliseconds: 200
