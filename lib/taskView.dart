@@ -19,19 +19,23 @@ class _MyTaskViewState extends State<TaskView>{
   @override
   Widget build(BuildContext context) {
 
-    double windowWidth = MediaQuery.of(context).size.height;
-    double windowHeight = MediaQuery.of(context).size.height;
+//    double windowWidth = MediaQuery.of(context).size.height;
+//    double windowHeight = MediaQuery.of(context).size.height;
 
     return Container(
           child: FutureBuilder(
             future: taskHttp.getTasks(),
             builder: (BuildContext buildContext, AsyncSnapshot<List<Task>> snapshot) {
               if(snapshot.hasData){
-                print("Complete");
                 List<Task> tasks = snapshot.data;
                 return ListView(
                   children: tasks.map(
-                          (Task task) => GradientCardView(task.taskName, task.startDate,task.rewardPoint)
+                          (Task task) => GestureDetector(
+                              onTap: (){
+                                print(task.taskName);
+                              },
+                              child: GradientCardView(task.taskName, task.startDate,task.rewardPoint)
+                          )
 //                              ListTile(
 //                        title: Text(task.taskName.toString()),
 //                        subtitle: Text(task.description.toString()),

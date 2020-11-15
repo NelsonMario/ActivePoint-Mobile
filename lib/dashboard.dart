@@ -1,9 +1,7 @@
 import 'package:activepoint_frontend/service/http/getTasks.dart';
 import 'package:activepoint_frontend/taskView.dart';
 import 'package:activepoint_frontend/utils/colorConstants.dart';
-import 'package:activepoint_frontend/utils/credentialConstants.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/takenTask.dart';
 
@@ -14,10 +12,9 @@ class Dashboard extends StatefulWidget {
 
 class _MyDashboardState extends State<Dashboard> {
 
-  final String _token = "";
   final TaskHTTP taskHttp = new TaskHTTP();
-  int taken = 0;
-  int unfinished = 0;
+  int completeStatus = 0;
+  int onGoingStatus = 0;
 
 
   @override
@@ -60,7 +57,7 @@ class _MyDashboardState extends State<Dashboard> {
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                     child:  Text(
-                      "Jobs\nDashboard" + _token,
+                      "Jobs\nDashboard",
                       style: TextStyle(
                           fontFamily: "Nunito",
                           fontWeight: FontWeight.w900,
@@ -71,7 +68,10 @@ class _MyDashboardState extends State<Dashboard> {
                   ),
                   SizedBox(height: 10,),
                   LinearProgressIndicator(
-                    value: taken == 0 ? 0 : taken - unfinished / taken,
+                    /*
+                    * Do some calculation for task progress bar
+                    * */
+                    value: completeStatus == 0 ? 0 : completeStatus / completeStatus + onGoingStatus,
                     backgroundColor: lightGrayColor,
                     valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
                   ),
@@ -100,19 +100,30 @@ class _MyDashboardState extends State<Dashboard> {
               ),
               child: FutureBuilder(
                 future: taskHttp.getTakenTask(),
-                builder: (BuildContext bc, AsyncSnapshot<TakenTask> snapshot){
+                builder: (BuildContext bc, AsyncSnapshot<List<TakenTask>> snapshot){
                   if(snapshot.hasData){
-                    TakenTask takenTask = snapshot.data;
+                    List<TakenTask> takenTask = snapshot.data;
 
-                    taken = takenTask.taken;
-                    unfinished = takenTask.unfinished;
+                    /*
+                    * Check the status of task
+                    * */
+
+                    onGoingStatus = 0;
+                    completeStatus = 0;
+
+                    takenTask.forEach((element) {
+                      if (element.status == "ongoing")
+                        onGoingStatus++;
+                      else if(element.status == "complete")
+                        completeStatus++;
+                    });
 
                     return Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        buildInfo(taken, "Taken Task"),
+                        buildInfo(onGoingStatus, "On Going task"),
                         SizedBox(width: 25,),
-                        buildInfo(unfinished, "Unfinished Task")
+                        buildInfo(completeStatus, "Completed Task")
                       ],
                     );
                   }

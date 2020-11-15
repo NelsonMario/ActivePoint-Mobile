@@ -12,10 +12,16 @@ class TaskHTTP{
 
   Future<List<Task>> getTasks() async{
 
-    Response res = await get(getTasksUrl);
+    TokenHttp tokenHttp = new TokenHttp();
+
+    String token = await tokenHttp.readToken();
+
+    Response res = await get(getTasksUrl, headers: {
+      "Authorization": "Bearer " + token
+    });
+
 
     if(res.statusCode == 200){
-
       List<dynamic> body = jsonDecode(res.body);
 
       List<Task> tasks = body.map((dynamic item) => Task.fromJson(item)).toList();
@@ -26,7 +32,7 @@ class TaskHTTP{
     }
   }
 
-  Future<TakenTask> getTakenTask() async{
+  Future<List<TakenTask>> getTakenTask() async{
 
     TokenHttp tokenHttp = new TokenHttp();
 
@@ -37,14 +43,13 @@ class TaskHTTP{
     });
 
     if(res.statusCode == 200){
-      var json = jsonDecode(res.body);
 
-      return TakenTask.fromJson(json);
+      List<dynamic> body = jsonDecode(res.body);
+
+      List<TakenTask> takenTasks = body.map((dynamic item) => TakenTask.fromJson(item)).toList();
+      return takenTasks;
     }
   }
-
-
-
 }
 
 
