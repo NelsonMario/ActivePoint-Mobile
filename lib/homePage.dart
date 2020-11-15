@@ -69,5 +69,5 @@ Future<String> _readToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   _token = prefs.getString("REQUEST_TOKEN");
 
-  return _token;
+  return _token ;
 }

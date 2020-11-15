@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:activepoint_frontend/model/takenTask.dart';
 import 'package:activepoint_frontend/service/http/endpoints.dart';
 import 'package:activepoint_frontend/model/task.dart';
+import 'package:activepoint_frontend/service/http/getToken.dart';
 import 'package:http/http.dart';
 
 class TaskHTTP{
@@ -25,7 +26,12 @@ class TaskHTTP{
     }
   }
 
-  Future<TakenTask> getTakenTask(String token) async{
+  Future<TakenTask> getTakenTask() async{
+
+    TokenHttp tokenHttp = new TokenHttp();
+
+    String token = await tokenHttp.readToken();
+
     Response res = await get(getTakenTaskUrl, headers: {
       "Authorization": "Bearer " + token
     });

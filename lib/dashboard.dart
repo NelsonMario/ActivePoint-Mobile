@@ -14,15 +14,14 @@ class Dashboard extends StatefulWidget {
 
 class _MyDashboardState extends State<Dashboard> {
 
-
-  String token = "";
-  TaskHTTP taskHttp = new TaskHTTP();
+  final String _token = "";
+  final TaskHTTP taskHttp = new TaskHTTP();
   int taken = 0;
   int unfinished = 0;
 
+
   @override
   Widget build(BuildContext context) {
-
 
     Column buildInfo(int countTasks, String title){
         return Column(
@@ -61,7 +60,7 @@ class _MyDashboardState extends State<Dashboard> {
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                     child:  Text(
-                      "Jobs\nDashboard",
+                      "Jobs\nDashboard" + _token,
                       style: TextStyle(
                           fontFamily: "Nunito",
                           fontWeight: FontWeight.w900,
@@ -100,7 +99,7 @@ class _MyDashboardState extends State<Dashboard> {
                 color: secondaryColor
               ),
               child: FutureBuilder(
-                future: taskHttp.getTakenTask(envToken),
+                future: taskHttp.getTakenTask(),
                 builder: (BuildContext bc, AsyncSnapshot<TakenTask> snapshot){
                   if(snapshot.hasData){
                     TakenTask takenTask = snapshot.data;
@@ -138,26 +137,6 @@ class _MyDashboardState extends State<Dashboard> {
         ),
       )
     );
-  }
-  Future<String> _readToken() async {
-
-    String _token = "";
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString("REQUEST_TOKEN");
-
-    return _token;
-  }
-
-  _requestTakenTask(String token) async{
-    TaskHTTP taskHTTP = new TaskHTTP();
-
-    int tempTaken = 0;
-    int tempUnfinished = 0;
-
-    await taskHTTP.getTakenTask(token).then((value) => {
-      tempTaken = value.taken,
-      tempUnfinished = value.unfinished,
-    }).catchError((e) => print("error"));
   }
 }
 
