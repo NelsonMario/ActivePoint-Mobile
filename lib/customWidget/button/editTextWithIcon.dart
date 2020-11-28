@@ -5,9 +5,10 @@ class EditTextWithIcon extends StatelessWidget {
   final String hintString;
   final IconData icon;
   final receiveInputController;
+  final bool isPassword;
 
 
-  EditTextWithIcon(this.hintString, this.icon, this.receiveInputController);
+  EditTextWithIcon(this.hintString, this.icon, this.receiveInputController, this.isPassword);
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,9 @@ class EditTextWithIcon extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: receiveInputController,
+              obscureText: isPassword,
+              enableSuggestions: !isPassword,
+              autocorrect: !isPassword,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 20),
                 border: InputBorder.none,

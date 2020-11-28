@@ -14,7 +14,7 @@ class UserHttp{
 
     if(res.statusCode == 200){
       var user = jsonDecode(res.body);
-
+      print(user);
       return User.fromJson(user);
     }else{
       print ("invalid Email or Password");

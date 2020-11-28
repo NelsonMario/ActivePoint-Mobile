@@ -1,3 +1,5 @@
+import 'package:activepoint_frontend/profilePage.dart';
+import 'package:activepoint_frontend/rewardPage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './customWidget/button/primaryButton.dart';

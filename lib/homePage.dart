@@ -1,6 +1,7 @@
 import 'package:activepoint_frontend/dashboard.dart';
+import 'package:activepoint_frontend/profilePage.dart';
 import 'package:activepoint_frontend/rewardPage.dart';
-import 'package:activepoint_frontend/taskView.dart';
+import 'package:activepoint_frontend/taskPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +19,8 @@ class _MyHomePageState extends State<HomePage>{
   final List<Widget> _children = [
     RewardPage(),
     Dashboard(),
-    TaskView(),
+    TaskPage(),
+    ProfilePage()
   ];
 
   int _currentIndex = 1;
@@ -31,8 +33,6 @@ class _MyHomePageState extends State<HomePage>{
         _currentIndex = index;
       });
     }
-
-
 
     setState(() {
       _readToken().then((value) => token = value);
@@ -49,6 +49,7 @@ class _MyHomePageState extends State<HomePage>{
           Icon(Icons.monetization_on, size: 20, color: Colors.black,),
           Icon(Icons.add, size: 20, color: Colors.black,),
           Icon(Icons.supervised_user_circle, size: 20, color: Colors.black,),
+          Icon(Icons.verified_user, size: 20, color: Colors.black,)
         ],
         animationDuration: Duration(
           milliseconds: 200

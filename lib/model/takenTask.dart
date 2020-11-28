@@ -18,7 +18,7 @@ class TakenTask{
       taskId: json['task_id'] as int,
       userId: json['user_id'] as int,
       status: json['status'] as String,
-      takeDate: json['take_data'] as String,
+      takeDate: json['take_date'] as String,
       task: Task.fromJson(json['task'])
     );
   }

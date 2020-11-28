@@ -1,5 +1,6 @@
+import 'package:activepoint_frontend/profilePage.dart';
 import 'package:activepoint_frontend/service/http/getTasks.dart';
-import 'package:activepoint_frontend/taskView.dart';
+import 'package:activepoint_frontend/availableTaskView.dart';
 import 'package:activepoint_frontend/utils/colorConstants.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,11 @@ class _MyDashboardState extends State<Dashboard> {
   int completeStatus = 0;
   int onGoingStatus = 0;
 
+  _navigateToProfilePage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return ProfilePage();
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +59,19 @@ class _MyDashboardState extends State<Dashboard> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children:  [
                   Padding(
                     padding: EdgeInsets.only(top: 10),
-                    child:  Text(
-                      "Jobs\nDashboard",
-                      style: TextStyle(
-                          fontFamily: "Nunito",
-                          fontWeight: FontWeight.w900,
-                          fontSize: 28,
-                          color: Color(0xff000000)
+                    child: Text(
+                        "Jobs\nDashboard",
+                        style: TextStyle(
+                            fontFamily: "Nunito",
+                            fontWeight: FontWeight.w900,
+                            fontSize: 28,
+                            color: Color(0xff000000)
+                        ),
                       ),
                     ),
-                  ),
                   SizedBox(height: 10,),
                   LinearProgressIndicator(
                     /*
@@ -122,8 +128,8 @@ class _MyDashboardState extends State<Dashboard> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         buildInfo(onGoingStatus, "On Going task"),
-                        SizedBox(width: 25,),
-                        buildInfo(completeStatus, "Completed Task")
+                        SizedBox(width: 10,),
+                        buildInfo(completeStatus, "Completed Task"),
                       ],
                     );
                   }
@@ -142,7 +148,7 @@ class _MyDashboardState extends State<Dashboard> {
             ),
             SizedBox(height: 5,),
             Expanded(
-              child: TaskView(),
+              child: AvailableTaskView(),
             )
           ],
         ),

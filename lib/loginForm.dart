@@ -54,8 +54,8 @@ class LoginForm extends StatelessWidget {
                     )),
                   ),
 
-                  EditTextWithIcon("Email", Icons.email, receiveEmailController),
-                  EditTextWithIcon("Password", Icons.vpn_key, receivePasswordController),
+                  EditTextWithIcon("Email", Icons.email, receiveEmailController, false),
+                  EditTextWithIcon("Password", Icons.vpn_key, receivePasswordController, true),
                   SizedBox(
                     height: 60,
                   ),
