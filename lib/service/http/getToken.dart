@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:activepoint_frontend/service/http/endpoints.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,11 @@ class TokenHttp{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("REQUEST_TOKEN");
     return token;
+  }
+
+  deleteToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
 }

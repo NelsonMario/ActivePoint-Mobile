@@ -1,6 +1,8 @@
 import 'package:activepoint_frontend/customWidget/cards/gradientCardView.dart';
 import 'package:activepoint_frontend/model/reward.dart';
+import 'package:activepoint_frontend/model/user.dart';
 import 'package:activepoint_frontend/service/http/getReward.dart';
+import 'package:activepoint_frontend/service/http/getUser.dart';
 import 'package:activepoint_frontend/utils/colorConstants.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +19,36 @@ class RewardPage extends StatefulWidget{
 class _MyRewardPageState extends State<RewardPage>{
 
   RewardHTTP rewardHTTP = new RewardHTTP();
+  UserHttp userHttp = new UserHttp();
+
+  Column buildInfo(int point, String title){
+
+    return Column(
+        children: [
+          Text(
+            point.toString(),
+            style: TextStyle(
+                fontFamily: "Nunito",
+                fontWeight: FontWeight.w900,
+                fontSize: 28,
+                color: Color(0xffffffff)
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+                fontFamily: "Nunito",
+                fontWeight: FontWeight.w900,
+                fontSize: 12,
+                color: Color(0xffffffff)
+            ),
+          )
+        ]
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
-//    double windowWidth = MediaQuery.of(context).size.height;
-//    double windowHeight = MediaQuery.of(context).size.height;
 
     return Container(
       child: SafeArea(
@@ -40,6 +66,34 @@ class _MyRewardPageState extends State<RewardPage>{
                 ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: FutureBuilder(
+                future: userHttp.getUserFromSF(),
+                builder: (BuildContext bc, AsyncSnapshot<User> snapshot){
+                  if(snapshot.hasData){
+                    User user = snapshot.data;
+
+                    /*
+                    * Check the status of task
+                    * */
+
+                    return  Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        "Reward Point : " + user.point.toString(),
+                        style: TextStyle(
+                            fontFamily: "Nunito",
+                            fontSize: 20,
+                            color: Color(0xff000000)
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
+              )
+            ),
             Expanded(
               child: Center(
                 child: FutureBuilder(
@@ -54,7 +108,7 @@ class _MyRewardPageState extends State<RewardPage>{
                         (Reward reward) => GestureDetector(
                           onTap: (){
                             print(reward.desc);
-                            showModalBottomSheet(context: context, builder: (context){
+                            showModalBottomSheet(context: context, builder: (_){
                               return Container(
                                 child: Column(
                                   children: [
@@ -156,11 +210,12 @@ class _MyRewardPageState extends State<RewardPage>{
                                     ),
                                     GestureDetector(
                                       onTap: (){
-                                        rewardHTTP.insertReward(reward.id).then((value) => {
-                                          print(value)
-                                        });
-                                        setState(() {
-
+                                        rewardHTTP.insertReward(reward.id).then((value){
+                                          if(value){
+                                            Navigator.of(context).pop();
+                                          }
+                                          setState(() {
+                                          });
                                         });
                                       },
                                       child: PrimaryButton("Claim Reward")

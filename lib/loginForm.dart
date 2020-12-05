@@ -63,7 +63,7 @@ class LoginForm extends StatelessWidget {
                     onTap: (){
                       tokenHttp.getToken(receiveEmailController.text, receivePasswordController.text).then((value) => {
                         token = value,
-                        setTokenToSF(token),
+                        setUserToSF(receiveEmailController.text, receivePasswordController.text, token),
                         envToken = value
                       }).catchError((e) => print("error")).whenComplete(() => {
                         userHttp.getUser(receiveEmailController.text, receivePasswordController.text, token).then((value) => {
@@ -92,8 +92,10 @@ class LoginForm extends StatelessWidget {
   }
 }
 
-setTokenToSF(String token) async {
+setUserToSF(String email, String password, String token) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('EMAIL', email);
+  prefs.setString('PASSWORD', password);
   prefs.setString('REQUEST_TOKEN', token);
 }
 

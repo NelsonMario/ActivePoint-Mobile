@@ -43,10 +43,11 @@ class RewardHTTP{
         "reward_id": id.toString()
       }
     );
-    print('res');
-
-
     if(res.statusCode == 200){
+
+      if(json.decode(res.body)["message"] == "fail to take reward") {
+        return false;
+      }
       return true;
     } else{
       return false;
