@@ -21,6 +21,31 @@ class _MyRewardPageState extends State<RewardPage>{
   RewardHTTP rewardHTTP = new RewardHTTP();
   UserHttp userHttp = new UserHttp();
 
+  showAlertDialog(BuildContext context, String title, String content) {
+
+    Widget closeButton = FlatButton(
+      child: Text("Close"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        closeButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Column buildInfo(int point, String title){
 
     return Column(
@@ -211,8 +236,11 @@ class _MyRewardPageState extends State<RewardPage>{
                                     GestureDetector(
                                       onTap: (){
                                         rewardHTTP.insertReward(reward.id).then((value){
-                                          if(value){
-                                            Navigator.of(context).pop();
+                                          print(value);
+                                          if(!value){
+                                            showAlertDialog(context, "Error", "Insufficient Points");
+                                          }else{
+                                            showAlertDialog(context, "Success", "Reward has been claimed");
                                           }
                                           setState(() {
                                           });

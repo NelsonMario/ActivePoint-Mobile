@@ -19,6 +19,31 @@ class _MyAvailableTaskViewState extends State<AvailableTaskView>{
   TaskHTTP taskHttp = new TaskHTTP();
   bool _isLoading = false;
 
+  showAlertDialog(BuildContext context, String title, String content) {
+
+    Widget closeButton = FlatButton(
+      child: Text("Close"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        closeButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -118,7 +143,6 @@ class _MyAvailableTaskViewState extends State<AvailableTaskView>{
                                               ),
                                             ],
                                           ),
-
                                         ),
                                         SizedBox(
                                           height: 10,
@@ -159,12 +183,12 @@ class _MyAvailableTaskViewState extends State<AvailableTaskView>{
                                         GestureDetector(
                                           onTap: (){
                                             taskHttp.insertTask(task.id).then((value) => {
-                                              setState(() {
-                                                _isLoading = true;
-                                              })
+                                              if(value){
+                                                showAlertDialog(context, "Success", "Success Taken")
+                                              }
                                             });
                                             setState(() {
-                                              _isLoading = false;
+
                                             });
                                           },
                                           child: PrimaryButton("Take Task")

@@ -13,13 +13,12 @@ class UserHttp{
     Response res = await get(getUserUrl, headers: {
       'Authorization': 'Bearer ' + token
     });
-
+    print(res.statusCode);
     if(res.statusCode == 200){
       var user = jsonDecode(res.body);
-      print(user);
       return User.fromJson(user);
     }else{
-      print ("invalid Email or Password");
+      return null;
     }
   }
 
@@ -37,7 +36,7 @@ class UserHttp{
       print(user);
       return User.fromJson(user);
     }else{
-      print ("invalid Email or Password");
+      return null;
     }
   }
 

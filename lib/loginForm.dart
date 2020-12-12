@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:activepoint_frontend/homePage.dart';
 import 'package:activepoint_frontend/service/http/getToken.dart';
 import 'package:activepoint_frontend/service/http/getUser.dart';
@@ -64,11 +66,13 @@ class LoginForm extends StatelessWidget {
                       tokenHttp.getToken(receiveEmailController.text, receivePasswordController.text).then((value) => {
                         token = value,
                         setUserToSF(receiveEmailController.text, receivePasswordController.text, token),
-                        envToken = value
+                        print(token)
                       }).catchError((e) => print("error")).whenComplete(() => {
                         userHttp.getUser(receiveEmailController.text, receivePasswordController.text, token).then((value) => {
-                          print(value.email),
-                          _navigateToHomePage(),
+                          print(value),
+                          if(value != null){
+                            _navigateToHomePage(),
+                          }
                         })
                       });
                     },

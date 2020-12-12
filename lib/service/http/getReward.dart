@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:activepoint_frontend/service/http/endpoints.dart';
 import 'package:activepoint_frontend/model/reward.dart';
 import 'package:activepoint_frontend/service/http/getToken.dart';
-import 'package:activepoint_frontend/utils/colorConstants.dart';
 import 'package:http/http.dart';
 
 class RewardHTTP{
@@ -24,7 +23,7 @@ class RewardHTTP{
       List<dynamic> body = jsonDecode(res.body);
 
       List<Reward> rewards = body.map((dynamic item) => Reward.fromJson(item)).toList();
-
+      print("asdasd" + rewards.toString());
       return rewards;
     }else{
       throw "Can't get rewards";
@@ -53,4 +52,6 @@ class RewardHTTP{
       return false;
     }
   }
+
+
 }

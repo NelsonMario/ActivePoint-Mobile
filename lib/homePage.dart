@@ -1,6 +1,7 @@
 import 'package:activepoint_frontend/dashboard.dart';
 import 'package:activepoint_frontend/profilePage.dart';
 import 'package:activepoint_frontend/rewardPage.dart';
+import 'package:activepoint_frontend/shareTaskPage.dart';
 import 'package:activepoint_frontend/taskPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,14 @@ class HomePage extends StatefulWidget{
 class _MyHomePageState extends State<HomePage>{
 
   final List<Widget> _children = [
+    ShareTaskPage(),
     RewardPage(),
     Dashboard(),
     TaskPage(),
     ProfilePage()
   ];
 
-  int _currentIndex = 1;
+  int _currentIndex = 2;
   String token;
 
   @override
@@ -46,6 +48,7 @@ class _MyHomePageState extends State<HomePage>{
         backgroundColor: Colors.white,
         buttonBackgroundColor: Colors.white,
         items: <Widget>[
+          Icon(Icons.share, size: 20, color: Colors.black,),
           Icon(Icons.monetization_on, size: 20, color: Colors.black,),
           Icon(Icons.add, size: 20, color: Colors.black,),
           Icon(Icons.supervised_user_circle, size: 20, color: Colors.black,),
@@ -54,7 +57,7 @@ class _MyHomePageState extends State<HomePage>{
         animationDuration: Duration(
           milliseconds: 200
         ),
-        index: 1,
+        index: 2,
         animationCurve: Curves.fastLinearToSlowEaseIn,
         onTap: (index){
           onTabTapped(index);

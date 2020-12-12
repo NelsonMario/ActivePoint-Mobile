@@ -19,6 +19,31 @@ class _MyTaskPageState extends State<TaskPage>{
 
   TaskHTTP taskHttp = new TaskHTTP();
 
+  showAlertDialog(BuildContext context, String title, String content) {
+
+    Widget closeButton = FlatButton(
+      child: Text("Close"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        closeButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -179,7 +204,17 @@ class _MyTaskPageState extends State<TaskPage>{
                                             SizedBox(
                                               height: 10,
                                             ),
-                                            PrimaryButton("Shared Task")
+                                            GestureDetector(
+                                              onTap: () {
+                                                taskHttp.shareTask(takenTasks.taskId).then((value) => {
+                                                  if(!value){
+                                                    showAlertDialog(context, "Success", "Collaboration has been shared")
+                                                  }
+                                                });
+                                              },
+                                             child: PrimaryButton("Shared Task"),
+                                            )
+
                                           ],
                                         ),
                                         decoration: BoxDecoration(
