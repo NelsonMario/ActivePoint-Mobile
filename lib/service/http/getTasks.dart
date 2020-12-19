@@ -87,7 +87,7 @@ class TaskHTTP{
     Response res = await post(shareTaskUrl, headers: {
       "Authorization": "Bearer " + token,
     },body: {
-      "task_id": id.toString()
+      "taken_task_id": id.toString()
       }
     );
 
@@ -129,6 +129,7 @@ class TaskHTTP{
         "shared_task_id": id.toString()
       }
     );
+
 
     if(res.statusCode == 200){
       return true;

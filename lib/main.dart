@@ -1,5 +1,3 @@
-import 'package:activepoint_frontend/profilePage.dart';
-import 'package:activepoint_frontend/rewardPage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './customWidget/button/primaryButton.dart';
@@ -104,7 +102,7 @@ class _InitPageState extends State<InitPage>{
                                   bottom: 20
                               ),
                               child: Text(
-                                'Job Free',
+                                'Active Point',
                                 style: TextStyle(
                                   color: _headingColor,
                                   fontSize: 28,

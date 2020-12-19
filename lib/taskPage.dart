@@ -206,8 +206,8 @@ class _MyTaskPageState extends State<TaskPage>{
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                taskHttp.shareTask(takenTasks.taskId).then((value) => {
-                                                  if(!value){
+                                                taskHttp.shareTask(takenTasks.id).then((value) => {
+                                                  if(value){
                                                     showAlertDialog(context, "Success", "Collaboration has been shared")
                                                   }
                                                 });

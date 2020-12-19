@@ -260,7 +260,7 @@ class _MyRewardPageState extends State<RewardPage>{
                               );
                             });
                           },
-                          child: GradientCardView(reward.desc, "Quantity: " + reward.claimPoint.toString(), reward.quantity),
+                          child: GradientCardView(reward.desc, "Quantity: " + reward.quantity.toString(), reward.claimPoint),
                         )).toList(),
                       );
                     }

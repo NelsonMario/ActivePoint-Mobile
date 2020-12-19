@@ -72,9 +72,9 @@ class _ShareTaskPage extends State<ShareTaskPage>{
                       future: taskHttp.getShareTakenTask(),
                       builder: (BuildContext buildContext, AsyncSnapshot<List<ShareTask>> snapshot) {
                         if(snapshot.hasData){
-                          List<ShareTask> shareTakens = snapshot.data;
+                          List<ShareTask> shareListTaken = snapshot.data;
                           return ListView(
-                            children: shareTakens.map(
+                            children: shareListTaken.map(
                                     (ShareTask shareTaken) => GestureDetector(
                                     onTap: (){
                                       showModalBottomSheet(context: context, builder: (context){
